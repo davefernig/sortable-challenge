@@ -119,13 +119,6 @@ def match_on_model(mapping, manufacturer, families, description, max_mod):
             if longest_model_match:
                 hits.add((family, longest_model_match))
 
-    if 'steadyshot' in description and '180' in description:
-        print hits
-        print family
-        print description
-        print mapping[frozenset(['sony'])].keys()
-        raw_input()
-
     if len(hits) == 1:
         return list(hits)[0]
 

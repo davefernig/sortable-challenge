@@ -84,9 +84,6 @@ def parse_listing(line):
 
     manu = tokenize_manu(listing['manufacturer'])
 
-    #title = ' '.join(map(tokenize_code, listing['title'].split()))
-    #title = tuple(make_substitutions(title, listing_subs).split())
-
     title = listing['title'].split()
     title = reduce(lambda a, s: a + tokenize_code(s), title, [])
     title = tuple(make_substitutions(' '.join(title), listing_subs).split())
