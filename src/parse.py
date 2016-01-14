@@ -131,7 +131,7 @@ if __name__ == "__main__":
     mapping, max_fam, max_mod = {}, 0, 0
 
     with codecs.open('../input/products.txt', encoding='utf-8') as products:
-        print 'Reading in products.txt, building tree...'
+        print 'Reading in ../input/products.txt, building tree...'
 
         for line in products:
             manufacturer, family, model, name = matching_helpers.parse_product(line)
@@ -145,7 +145,7 @@ if __name__ == "__main__":
                 max_mod = len(model)
 
     with codecs.open('../input/listings.txt', encoding='utf-8') as listings:
-        print 'Reading in listings.txt, generating matches...'
+        print 'Reading in ../input/listings.txt, generating matches...'
 
         for line in listings:
             manufacturer_field, description, price, listing = matching_helpers.parse_listing(line)
@@ -164,7 +164,7 @@ if __name__ == "__main__":
                     mapping[manufacturer][family][model].append(listing)
 
     with codecs.open('../output/results.json', 'w', encoding='utf-8') as outfile:
-        print 'Writing results to file...'
+        print 'Writing results to ../output/results.json'
 
         for manufacturer in mapping:
 
