@@ -1,5 +1,5 @@
 # Sortable Coding Challenge
-This is my entry to the Sortable Coding Challenge. It is essentially a hashing solution. If there are constant bounds on the number of manufacturers, families per manufacturer, and the character-length of listing titles, it runs in linear time. On my machine (1.7GHz) it takes about 7.5s.
+This is my entry to the Sortable Coding Challenge. It is essentially a hashing solution. If there are constant bounds on the number of manufacturers, families per manufacturer, and the character-length of listing titles, it runs in linear time. On my machine (1.7GHz) it takes about 7s.
 
 ## Requires
 Python 2
