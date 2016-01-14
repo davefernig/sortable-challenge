@@ -135,7 +135,6 @@ if __name__ == "__main__":
 
         for line in products:
             manufacturer, family, model, name = matching_helpers.parse_product(line)
-            print family
             insert(mapping, manufacturer, family, model, name)
 
             # Keep track of max n-gram size for families and models
@@ -164,7 +163,7 @@ if __name__ == "__main__":
                 if model:
                     mapping[manufacturer][family][model].append(listing)
 
-    with codecs.open('../output/sub_refac_results.json', 'w', encoding='utf-8') as outfile:
+    with codecs.open('../output/results.json', 'w', encoding='utf-8') as outfile:
         print 'Writing results to ../output/results.json'
 
         for manufacturer in mapping:
