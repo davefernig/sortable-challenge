@@ -2,6 +2,7 @@ import matching_helpers
 import codecs
 import json
 import sys
+import os
 
 if not os.path.exists('../output/'):
     os.makedirs('../output/')
