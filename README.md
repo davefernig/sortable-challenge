@@ -23,8 +23,8 @@ python compare.py results_v1.json results_v2.json
 
 ##Implementation Details
 
-### Data Cleaning
-- Some replacements are made (e.g. the Greek letter mu becomes 'mju'). There are opportunities for further gains here.
+### Cleaning
+- Some rule-based substitutions are made (the Greek letter mu becomes 'mju', 'hewlett packard' is replaced with 'hp', etc). There are opportunities for further gains here, I have only implemented ones that seemed to yield obvious performance gains based on visually examining the output. 
 - Strings are sent to lower, split into their alphabetic and numeric components, and other chars removed (e.g. so that "XL-200s" is equivalent to "xl 200 s") 
 
 ### Data Structures

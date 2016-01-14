@@ -1,34 +1,24 @@
 import codecs
 import json
+import sys
 import os
 import re
-import sys
 
-# Special characters for string replacement in listings
-family_special_chars = {'cybershot': ['cyber', 'shot']}
-model_special_chars = {u'\xb5' : ['mju'], 
-                       'dsc': ['cyber', 'shot', 'dsc'], 
-                       'cybershot': ['cyber', 'shot']}
-manu_special_chars = {frozenset(['hewlett', 'packard']) : frozenset(['hp'])}
+# For string substitution in listings
+listing_subs = {u'\xb5' : ' mju ',
+                ' dsc' : ' cybershot dsc ',
+                'cyber shot' : ' cybershot ',
+                'power shot' : ' powershot '}
 
-def tokenize_manu(line):
-    """
-    Returns the frozenset of tokens for matching on manufacturer
-    """
-    result = frozenset(line.lower().split())
+manu_subs = {'hewlett packard' : ' hp '}
 
-    for sc_set in manu_special_chars:
-        
-        if sc_set.issubset(result):
-            return manu_special_chars[sc_set]
-        
-    return result
+family_subs = {'cyber shot' : ' cybershot ',
+               'power shot' : ' powershot '}
 
-
-def tokenize_code(code, replace=None):
+def tokenize_code(code):
     """
     Split an alphanumeric item code into parts
-    e.g. "SH-100x becomes ['sh', '100', 'x']"
+    e.g. "SH-100x becomes "sh 100 x"
     """
     current_type, separated_code = char_type(code[0]), ''
 
@@ -41,23 +31,26 @@ def tokenize_code(code, replace=None):
             separated_code += char
 
         current_type = char_type(char)
-
-    result = separated_code.split()
     
-    if replace:
-        listing_result = []    
+    return separated_code.split()
 
-        for i in range(0, len(result)):
-         
-            if result[i] in replace:
-                listing_result += replace[result[i]]
-             
-            else:
-                listing_result.append(result[i])
 
-        result = listing_result
+def make_substitutions(sentence, subs):
+    """
+    Make the substitutions defined in sublist in tokens
+    """
+    for word in subs:
+        sentence = re.sub(word, subs[word], sentence)
 
-    return tuple(result)
+    return sentence
+
+
+def tokenize_manu(line):
+    """
+    Returns the frozenset of tokens for matching on manufacturer
+    """
+    result = make_substitutions(line.lower(), manu_subs)        
+    return frozenset(result.split())
 
 
 def parse_product(line):
@@ -66,11 +59,21 @@ def parse_product(line):
     model, and name.
     """
     product = json.loads(line)
+    
     name = product['product_name']
+    
     manu = tokenize_manu(product['manufacturer'])
-    model = tokenize_code(product['model'])
-    fam = tokenize_code(product['family'], replace=family_special_chars) if 'family' in product else (None)
-    return manu, fam, model, name
+    
+    model = tuple(tokenize_code(product['model']))
+    
+    family = None
+
+    if 'family' in product:
+        family = product['family'].split()
+        family = reduce(lambda a, s: a + tokenize_code(s), family, [])
+        family = tuple(make_substitutions(' '.join(family), family_subs).split())
+
+    return manu, family, model, name
 
 
 def parse_listing(line):
@@ -78,11 +81,19 @@ def parse_listing(line):
     Attempt to parse listing.
     """
     listing = json.loads(line)
+
     manu = tokenize_manu(listing['manufacturer'])
-    title = listing['title'].lower().split()
-    description = reduce(lambda a, s: a + list(tokenize_code(s, replace=model_special_chars)), title, [])
+
+    #title = ' '.join(map(tokenize_code, listing['title'].split()))
+    #title = tuple(make_substitutions(title, listing_subs).split())
+
+    title = listing['title'].split()
+    title = reduce(lambda a, s: a + tokenize_code(s), title, [])
+    title = tuple(make_substitutions(' '.join(title), listing_subs).split())
+
     price = float(listing['price'])
-    return manu, tuple(description), price, listing
+
+    return manu, title, price, listing
 
 
 def char_type(char):
