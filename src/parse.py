@@ -3,6 +3,9 @@ import codecs
 import json
 import sys
 
+if not os.path.exists('../output/'):
+    os.makedirs('../output/')
+
 
 def insert(mapping, manufacturer, family, model, product_name):
     """
