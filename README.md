@@ -8,7 +8,7 @@ Python 2
 
 Clone the repository, navigate to the directory 'src,' and run parse.py: 
 ```
-cd src
+cd sortable-challenge/src/
 python parse.py
 ```
 The output will be written to /output/results.json. To visually examine the results (one product at a time), use:
