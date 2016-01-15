@@ -33,7 +33,7 @@ The items in products.txt are hashed into a tree with a hierarchichal structure:
 
 - Assuming we have hit on a manufacturer, we try to match against that manufacturer's families. We check every n-gram in the title (where n runs through 1 to the size of the longest family name in products.txt). Here we allow for multiple hits.
 
-- Last, we try to match on a specific model in the same fashion. If we get exactly one hit, we add the listing to that branch. Each token can only contribute to one model – if there are overlapping model codes we take the longest. 
+- Last, we try to match on a specific model in the same fashion. Each token can only contribute to one model – if there are overlapping model codes we take the longest. If we get exactly one hit, we add that listing to the branch.  
 
 ### Efficiency
 Each product is processed and hashed once. Each listing is processed once. The number of times we attempt to hash it only depends on the length of its title, the number of families the manufacturer produces, and the largest n-gram family size. If these have constant bounds, then the program runs in O(m + n), where m is the number of products and n is the number of listings.  
@@ -41,11 +41,11 @@ Each product is processed and hashed once. Each listing is processed once. The n
 ## Assumptions
 I made following assumptions:
 
-1. For each product, we want to recall every listing whose contents are a superset of that product (and no other product).  
+1. For each product, we want to recall every listing whose contents are a superset of that product (and no other product). The contents must include the product itself – if the listing is only for an accessory we don't want to recall it.
 
-2. We want to recall all variants of a given product (e.g. A listing for a Sony Alpha NEX-5A will be considered a match for Sony Alpha NEX-5). The converse is not true – if a listing has less specificity than the the product, it will not be considered a match.  
+2. We want to recall all variants of a given product (e.g. A listing for a Sony Alpha NEX-5A will match Sony Alpha NEX-5). The converse is not true – if a listing has less specificity than the the product, it will not be considered a match.  
 
-In practice I imagine there will be counterexamples to the second assumption – I don't know enough about cameras to say if model codes are always prefix-free. Future work could include developing heuristics to determine whether trailing code information is trivial (e.g. a color code) or indicative of a fundamentally different product.
+In practice I imagine there might be counterexamples to the second assumption – I don't know enough about cameras to say if model codes are always prefix-free. Future work could include developing heuristics to determine whether trailing code information is trivial (e.g. a color code) or indicative of a fundamentally different product.
 
 
 
