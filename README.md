@@ -31,7 +31,7 @@ The items in products.txt are hashed into a tree with a hierarchichal structure:
 
 - To match manufacturers, first try the manufacturer field. If that fails try the first token of the title, but only use this if the price exceeds a threshold (an unknown manufacturer often indicates a third-party accessory, and these are usually cheaper).
 
-- Assuming we have hit on a manufacturer, we try to match against that manufacturer's product families. We do this by checking every n-gram in the title, where n runs through the max. Here we allow for multiple hits.
+- Assuming we have hit on a manufacturer, we try to match against that manufacturer's families. We check every n-gram in the title (where n runs through 1 to the size of the longest family name in products.txt). Here we allow for multiple hits.
 
 - Last, we try to match on a specific model in the same fashion. If we get exactly one hit, we add the listing to that branch. Each token can only contribute to one model – if there are overlapping model codes we take the longest. 
 
