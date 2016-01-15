@@ -1,15 +1,29 @@
 import json
 import sys
 
-filename = sys.argv[1]
-output_path = '../output/'
+if __name__ == "__main__":
 
-with open(output_path + filename) as infile:
+    filename = sys.argv[1]
+    output_path = '../output/'
+    version = sys.version_info[0]
 
-    for line in infile:
-        obj = json.loads(line)
-        print obj['product_name'], ',', len(obj['listings']), 'listings found'
+    if version == 2:
+        get_response = raw_input
+
+    if version == 3:
+        get_response = input
+
+    with open(output_path + filename) as infile:
+
+        for line in infile:
+            obj = json.loads(line)
+            print(obj['product_name'] + ' , ' + str(len(obj['listings'])) + ' listings found')
         
-        for listing in obj['listings']:
-            print '    ', listing
-        raw_input('---------------------------------------PRESS ENTER TO CONTINUE---------------------------------------')
+            for listing in obj['listings']:
+                print('    ' + str(listing))
+        
+            print('---------------------------------------Press Enter to continue, q to quit---------------------------------------')
+            response = get_response()
+
+            if response == 'q':
+                sys.exit()

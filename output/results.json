@@ -231,7 +231,7 @@
 {"listings": [], "product_name": "Fujifilm_MX-2900_Zoom"}
 {"listings": [], "product_name": "Fujifilm_MX-1700"}
 {"listings": [], "product_name": "Fujifilm_MX-700"}
-{"listings": [], "product_name": "Fujifilm_MX-1200"}
+{"listings": [{"currency": "USD", "price": "30.00", "manufacturer": "Fuji", "title": "Fujifilm MX-1200 Digital Camera"}], "product_name": "Fujifilm_MX-1200"}
 {"listings": [], "product_name": "Fujifilm_MX-1400"}
 {"listings": [], "product_name": "Fujifilm_MX-600_Zoom"}
 {"listings": [], "product_name": "Fujifilm_MX-2700"}

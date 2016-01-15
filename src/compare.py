@@ -1,57 +1,70 @@
 import json
 import sys
+    
+version = sys.version_info[0]
 
-filename_0, filename_1 = sys.argv[1], sys.argv[2]
-d0, d1, length_0, length_1 = {}, {}, 0, 0
-output_path = '../output/'
+if version == 2:
+    get_response = raw_input
+
+if version == 3:
+    get_response = input
 
 def msg(s0, s1, f0):
 
     if len(s0.difference(s1)) > 0:
-        print f0, 'contains more entries for:', product, '\n'
+        print(f0 + ' contains more entries for: ' + product + '\n')
 
         for item in s0.difference(s1):
-            print item
+            print(str(item))
 
-        print "----------------------Press Enter to continue, 's' to see listings these files share, q to quit----------------------"
+        print("----------------------Press Enter to continue, 's' to see listings these files share, q to quit----------------------")
         
-        response = raw_input()
+        response = get_response()
 
         if response == 'q':
             sys.exit()
 
         if response == 's':
             for item in s0.intersection(s1):
-                print item
+                print(str(item))
 
-            print "----------------------Press Enter to continue, q to quit----------------------"        
+            print("----------------------Press Enter to continue, q to quit----------------------")      
             
-            if raw_input() == 'q':
+            if get_response() == 'q':
                 sys.exit()
 
-with open(output_path + filename_0) as infile:
-    for line in infile:
-        obj = json.loads(line)
-        d0[obj['product_name']] = obj['listings']
-        length_0 += len(obj['listings'])        
+if __name__ == "__main__":
 
-with open(output_path + filename_1) as infile:
-    for line in infile:
-        obj = json.loads(line)
-        d1[obj['product_name']] = obj['listings']
-        length_1 += len(obj['listings'])
+    filename_0, filename_1 = sys.argv[1], sys.argv[2]
 
-print filename_0, 'contains', length_0, 'matches'
-print filename_1, 'contains', length_1, 'matches'
+    d0, d1, length_0, length_1 = {}, {}, 0, 0
 
-for product in d0:
+    output_path = '../output/'
 
-    d0_listings, d1_listings = set([]), set([])
-    for item in d0[product]:
-        d0_listings.add( (item['title'], item['price']) )
+    with open(output_path + filename_0) as infile:
+        for line in infile:
+            obj = json.loads(line)
+            d0[obj['product_name']] = obj['listings']
+            length_0 += len(obj['listings'])        
 
-    for item in d1[product]:
-        d1_listings.add( (item['title'], item['price']) )
+    with open(output_path + filename_1) as infile:
+        for line in infile:
+            obj = json.loads(line)
+            d1[obj['product_name']] = obj['listings']
+            length_1 += len(obj['listings'])
 
-    msg(d0_listings, d1_listings, filename_0)
-    msg(d1_listings, d0_listings, filename_1)
+    print(filename_0 + ' contains ' + str(length_0) + ' matches')
+    print(filename_1 + ' contains ' + str(length_1) + ' matches')
+
+    for product in d0:
+        d0_listings, d1_listings = set([]), set([])
+        
+        for item in d0[product]:
+            d0_listings.add( (item['title'], item['price']) )
+
+        for item in d1[product]:
+            d1_listings.add( (item['title'], item['price']) )
+
+        msg(d0_listings, d1_listings, filename_0)
+        msg(d1_listings, d0_listings, filename_1)
+

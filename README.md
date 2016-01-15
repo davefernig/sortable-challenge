@@ -11,7 +11,9 @@ Clone the repository, navigate to src, and run parse.py:
 cd sortable-challenge/src/
 python parse.py
 ```
-Output will be written to sortable-challenge/output/results.json. To visually examine the results (one product at a time), use:
+Output will be written to sortable-challenge/output/results.json. The paths to input and output files are specified in parse.py.  
+
+To visually examine the results (one product at a time), use:
 ```
 python inspect.py results.json
 ```

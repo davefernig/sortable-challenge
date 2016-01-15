@@ -4,6 +4,13 @@ import json
 import sys
 import os
 
+# PARAMS
+input_path = '../input/'
+output_path = '../output/'
+products_file = 'products.txt' 
+listings_file = 'listings.txt'
+output_file = 'results.json'
+
 
 def insert(mapping, manufacturer, family, model, product_name):
     """
@@ -40,7 +47,7 @@ def match_on_manufacturer(mapping, manufacturer, title, price):
     """
     if manufacturer not in mapping:
 
-        if title[0] in mapping and price > 30.0:
+        if title[0] in mapping and price >= 30.0:
             manufacturer = title[0]
 
         else:
@@ -110,8 +117,8 @@ def match_on_model(mapping, manufacturer, families, title, max_mod):
 
 if __name__ == "__main__":
 
-    if not os.path.exists('../output/'):
-        os.makedirs('../output/')
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
 
     version = sys.version_info[0]
 
@@ -124,8 +131,8 @@ if __name__ == "__main__":
     # Dictionary Mapping Products to listings; counters
     mapping, max_fam, max_mod = {}, 0, 0
 
-    with codecs.open('../input/products.txt', encoding='utf-8') as products:
-        print('Reading in ../input/products.txt, building tree...')
+    with codecs.open(input_path + products_file, encoding='utf-8') as products:
+        print('Reading in ' + input_path + products_file + ', building tree...')
 
         for line in products:
             manufacturer, family, model, name = matching_helpers.parse_product(line)
@@ -138,8 +145,8 @@ if __name__ == "__main__":
             if len(model) > max_mod:
                 max_mod = len(model)
 
-    with codecs.open('../input/listings.txt', encoding='utf-8') as listings:
-        print('Reading in ../input/listings.txt, generating matches...')
+    with codecs.open(input_path + listings_file, encoding='utf-8') as listings:
+        print('Reading in ' + input_path + listings_file + ', generating matches...')
 
         for line in listings:
             listing, manufacturer_field, title, price = matching_helpers.parse_listing(line)
@@ -157,8 +164,8 @@ if __name__ == "__main__":
                 if model:
                     mapping[manufacturer][family][model].append(listing)
 
-    with codecs.open('../output/results.json', 'w', encoding='utf-8') as outfile:
-        print('Writing results to ../output/results.json')
+    with codecs.open(output_path + output_file, 'w', encoding='utf-8') as outfile:
+        print('Writing results to ' + output_path + output_file)
 
         for manufacturer in mapping:
 
