@@ -35,6 +35,10 @@ def msg(s0, s1, f0):
 
 if __name__ == "__main__":
 
+    if len(sys.argv) != 3:
+        print("Usage:\npython compare.py name_of_result_file name_of_different_result_file\n")
+        sys.exit()
+
     filename_0, filename_1 = sys.argv[1], sys.argv[2]
 
     d0, d1, length_0, length_1 = {}, {}, 0, 0

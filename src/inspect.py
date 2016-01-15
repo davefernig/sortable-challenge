@@ -3,6 +3,10 @@ import sys
 
 if __name__ == "__main__":
 
+    if len(sys.argv) != 2:
+        print("Usage:\npython inspect.py name_of_result_file\n")
+        sys.exit()
+
     filename = sys.argv[1]
     output_path = '../output/'
     version = sys.version_info[0]
