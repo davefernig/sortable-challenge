@@ -4,6 +4,8 @@ import json
 import sys
 import os
 
+version = sys.version_info[0]
+
 if not os.path.exists('../output/'):
     os.makedirs('../output/')
 
@@ -131,7 +133,7 @@ if __name__ == "__main__":
     mapping, max_fam, max_mod = {}, 0, 0
 
     with codecs.open('../input/products.txt', encoding='utf-8') as products:
-        print 'Reading in ../input/products.txt, building tree...'
+        print('Reading in ../input/products.txt, building tree...')
 
         for line in products:
             manufacturer, family, model, name = matching_helpers.parse_product(line)
@@ -145,7 +147,7 @@ if __name__ == "__main__":
                 max_mod = len(model)
 
     with codecs.open('../input/listings.txt', encoding='utf-8') as listings:
-        print 'Reading in ../input/listings.txt, generating matches...'
+        print('Reading in ../input/listings.txt, generating matches...')
 
         for line in listings:
             listing, manufacturer_field, description, price = matching_helpers.parse_listing(line)
@@ -164,7 +166,7 @@ if __name__ == "__main__":
                     mapping[manufacturer][family][model].append(listing)
 
     with codecs.open('../output/results.json', 'w', encoding='utf-8') as outfile:
-        print 'Writing results to ../output/results.json'
+        print('Writing results to ../output/results.json')
 
         for manufacturer in mapping:
 
@@ -176,5 +178,12 @@ if __name__ == "__main__":
                     product_name, listings = result[0], result[1:]
                     result_object = {'product_name': product_name,
                                      'listings': listings}
-                    line = json.dumps(result_object, ensure_ascii=False).encode('utf8')
-                    outfile.write(unicode(line, 'utf-8') + '\n')
+
+                    if version == 2:
+                        line = json.dumps(result_object, ensure_ascii=False).encode('utf8')
+                        outfile.write(unicode(line, 'utf-8') + '\n')
+                   
+                    if version == 3:
+                        line = json.dumps(result_object, ensure_ascii=False).encode('utf8')
+                        outfile.write(str(line, 'utf-8'))
+                        outfile.write('\n')

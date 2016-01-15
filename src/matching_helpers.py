@@ -8,12 +8,15 @@ import re
 listing_subs = {u'\xb5' : ' mju ',
                 ' dsc' : ' cybershot dsc ',
                 'cyber shot' : ' cybershot ',
-                'power shot' : ' powershot '}
+                'power shot' : ' powershot ',                
+                'digital ixus' : ' ixus ',
+                'dmc' : ' lumix dmc '}
 
 manu_subs = {'hewlett packard' : ' hp '}
 
 family_subs = {'cyber shot' : ' cybershot ',
-               'power shot' : ' powershot '}
+               'power shot' : ' powershot ',
+               'digital ixus' : 'ixus'}
 
 
 def tokenize_code(code):
