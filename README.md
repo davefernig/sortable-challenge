@@ -1,5 +1,5 @@
 # Sortable Coding Challenge
-This is my entry to the Sortable Coding Challenge. It is essentially a hashing solution. If there are constant bounds on the number of manufacturers, families per manufacturer, and the maximum character-length of listing titles, it runs in linear time. On my machine (1.7GHz) it takes about 3s.
+This is my entry to the Sortable Coding Challenge. It is essentially a hashing solution, with some rule-based pre-processing. It runs in linear time, given some basic assumptions (more details below). On my machine (1.7GHz) it takes about 3s.
 
 ## Requires
 Python 2 or Python 3. (I've tested with 2.7 and 3.4. If you encounter version compatibility issues, let me know and I'll find a fix!)
@@ -15,7 +15,6 @@ Output will be written to sortable-challenge/output/results.json. To visually ex
 ```
 python inspect.py results.json
 ```
-
 To visually compare the differences between the output of different versions (analogous to the command line tool diff), use:
 ```
 python compare.py results_v1.json results_v2.json
@@ -23,29 +22,22 @@ python compare.py results_v1.json results_v2.json
 
 ##Implementation Details
 
-### Cleaning
-- Some rule-based substitutions are made (the Greek letter mu becomes 'mju', 'hewlett packard' is replaced with 'hp', etc). There are opportunities for further gains here, I have only implemented ones that seemed to yield obvious performance gains based on visually examining the output. 
+### Pre-processing
 - Strings are sent to lower, split into their alphabetic and numeric components, and other chars removed (e.g. so that "XL-200s" is equivalent to "xl 200 s") 
+- Some rule-based substitutions are made (e.g. the Greek letter mu is replaced by 'mju'; 'hewlett packard' is replaced by 'hp'). There are opportunities for further improvements here, I have only implemented ones that suggested significant performance gains based on visual examination of the output. 
 
-### Data Structures
-The items in products.txt are hashed into a tree (implemented as a nested dict) with a hierarchichal structure:
-
-Manufacturer (frozenset)   
-&nbsp;  &nbsp; &nbsp; &nbsp; |  
-&nbsp;  &nbsp; &nbsp; &nbsp; | ---- Family  (tuple(str))   
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |   
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | ---- Model (tuple(str))  
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |      
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; | ---- Results (list)  
-
-### Algorithm
-The file listings.txt is read, each listing is parsed, and an attempt is made to match the manufacturer, family, and model.
+### Data structures and algorithms
+The items in products.txt are hashed into a tree with a hierarchichal structure: manufacturer, family, product, and associated listings. Then listings.txt is read, each listing is parsed, and an attempt is made to match the manufacturer, family, and model.
 
 - To match against manufacturers, first look at the set intersections of the manufacturer field with each manufacturer in the tree. If we get exactly one hit we take that to be the manufacturer. If we don't get a hit, we try with the description, but then we add some additional checks because this is often indicative of an accessory. If we get multiple hits we skip the listing.
 
-- Assuming we have hit on exactly one manufacturer, we try to match against that manufacturer's product families. We do this by checking every n-gram in the title, where n runs through the number of strings. Here we allow for multiple hits.
+- Assuming we have hit on exactly one manufacturer, we try to match against that manufacturer's product families. We do this by checking every n-gram in the title, where n runs through the. Here we allow for multiple hits.
 
 - Finally, we try to match on a specific model, in a similar fashion to matching on families. If we get exactly one hit, we add the listing to that branch. Each token can only contribute to one model – if there are overlapping model codes we take the longest. 
+
+### Efficiency
+Each listing is compared to each 
+If there are constant bounds on the number of manufacturers, families per manufacturer, and the maximum character-length of listing titles
 
 ## Assumptions
 I made following assumptions:
