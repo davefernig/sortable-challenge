@@ -15,24 +15,12 @@ manu_subs = {'hewlett packard' : ' hp '}
 family_subs = {'cyber shot' : ' cybershot ',
                'power shot' : ' powershot '}
 
+
 def tokenize_code(code):
     """
-    Split an alphanumeric item code into parts
-    e.g. "SH-100x becomes "sh 100 x"
+    Split a code into parts, e.g. "SH-100x becomes "sh 100 x"
     """
-    current_type, separated_code = char_type(code[0]), ''
-
-    for char in code.lower():
-
-        if char_type(char) != current_type:
-            separated_code += ' '
-
-        if char_type(char) >= 0:
-            separated_code += char
-
-        current_type = char_type(char)
-    
-    return separated_code.split()
+    return tuple(re.findall(r"[^\W\d_]+|\d+", code.lower(), re.U))
 
 
 def make_substitutions(sentence, subs):
@@ -58,22 +46,20 @@ def parse_product(line):
     Parse a line in the products file into a tuple of manufacturer, family,
     model, and name.
     """
-    product = json.loads(line)
-    
-    name = product['product_name']
-    
-    manu = tokenize_manu(product['manufacturer'])
-    
-    model = tuple(tokenize_code(product['model']))
-    
-    family = None
-
-    if 'family' in product:
-        family = product['family'].split()
-        family = reduce(lambda a, s: a + tokenize_code(s), family, [])
-        family = tuple(make_substitutions(' '.join(family), family_subs).split())
-
+    product = json.loads(line)    
+    manu = tokenize_manu(product['manufacturer'])  
+    family = tokenize_and_sub(product, 'family', family_subs) if 'family' in product else None
+    model = tokenize_code(product['model'])
+    name = product['product_name']  
     return manu, family, model, name
+
+
+def tokenize_and_sub(tree, field, sublist):
+    """
+    Tokenize and make substitutions for 
+    """
+    result = tokenize_code(tree[field])
+    return tuple(make_substitutions(' '.join(result), sublist).split())
 
 
 def parse_listing(line):
@@ -81,30 +67,10 @@ def parse_listing(line):
     Attempt to parse listing.
     """
     listing = json.loads(line)
-
     manu = tokenize_manu(listing['manufacturer'])
-
-    title = listing['title'].split()
-    title = reduce(lambda a, s: a + tokenize_code(s), title, [])
-    title = tuple(make_substitutions(' '.join(title), listing_subs).split())
-
+    title = tokenize_and_sub(listing, 'title', listing_subs)
     price = float(listing['price'])
-
-    return manu, title, price, listing
-
-
-def char_type(char):
-    """
-    Return relevant character type
-    """
-    if char.isalpha():
-        return 0
-
-    elif char in [str(x) for x in range(0, 10)]:
-        return 1
-
-    else:
-        return -1
+    return listing, manu, title, price
 
 
 def extra_manu_check(mapping, description, price):

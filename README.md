@@ -1,5 +1,5 @@
 # Sortable Coding Challenge
-This is my entry to the Sortable Coding Challenge. It is essentially a hashing solution. If there are constant bounds on the number of manufacturers, families per manufacturer, and the character-length of listing titles, it runs in linear time. On my machine (1.7GHz) it takes about 7s.
+This is my entry to the Sortable Coding Challenge. It is essentially a hashing solution. If there are constant bounds on the number of manufacturers, families per manufacturer, and the character-length of listing titles, it runs in linear time. On my machine (1.7GHz) it takes about 3s.
 
 ## Requires
 Python 2
@@ -57,7 +57,7 @@ E.g. A listing for a Pentax K-7 accessory kit (no camera) will not be matched ag
 
 2. We want to recall all variants of a given product (e.g. A listing for a Sony Alpha NEX-5A will be considered a match for Sony Alpha NEX-5). The converse is not true – if a listing has less specificity than the the product, it will not be considered a match.  
 
-In practice I imagine there will be counterexamples to the second assumption – I don't know enough about cameras to say if model codes are always prefix-free. Future work could include developing heuristics to determine whether trailing code information is trivial (e.g. a color code) or indicative of a fundamentally different product. 
+In practice I imagine there will be counterexamples to the second assumption – I don't know enough about cameras to say if model codes are always prefix-free. Future work could include developing heuristics to determine whether trailing code information is trivial (e.g. a color code) or indicative of a fundamentally different product.
 
 
 

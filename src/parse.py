@@ -148,7 +148,7 @@ if __name__ == "__main__":
         print 'Reading in ../input/listings.txt, generating matches...'
 
         for line in listings:
-            manufacturer_field, description, price, listing = matching_helpers.parse_listing(line)
+            listing, manufacturer_field, description, price = matching_helpers.parse_listing(line)
  
             # Level 1: Attempt to match manufacturer field
             manufacturer = match_on_manufacturer(mapping, manufacturer_field, description, price)
