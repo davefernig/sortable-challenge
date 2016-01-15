@@ -10,9 +10,11 @@ listing_subs = {u'\xb5' : ' mju ',
                 'cyber shot' : ' cybershot ',
                 'power shot' : ' powershot ',                
                 'digital ixus' : ' ixus ',
-                'dmc' : ' lumix dmc '}
+                'dmc' : ' lumix dmc ',
+                'konica minolta|konica|minolta': ' konicaminolta '}
 
-manu_subs = {'hewlett packard' : ' hp '}
+manu_subs = {'hewlett packard' : ' hp ',
+             'konica minolta|konica|minolta': ' konicaminolta '}
 
 family_subs = {'cyber shot' : ' cybershot ',
                'power shot' : ' powershot ',
@@ -40,8 +42,9 @@ def tokenize_manu(line):
     """
     Returns the frozenset of tokens for matching on manufacturer
     """
-    result = make_substitutions(line.lower(), manu_subs)        
-    return frozenset(result.split())
+    result = make_substitutions(line.lower(), manu_subs)
+    result = result.split()[0] if result.split() else ''
+    return result
 
 
 def parse_product(line):
@@ -57,14 +60,6 @@ def parse_product(line):
     return manu, family, model, name
 
 
-def tokenize_and_sub(tree, field, sublist):
-    """
-    Tokenize and make substitutions for 
-    """
-    result = tokenize_code(tree[field])
-    return tuple(make_substitutions(' '.join(result), sublist).split())
-
-
 def parse_listing(line):
     """
     Attempt to parse listing.
@@ -76,15 +71,9 @@ def parse_listing(line):
     return listing, manu, title, price
 
 
-def extra_manu_check(mapping, description, price):
+def tokenize_and_sub(tree, field, sublist):
     """
-    Extra conditions for listings with an unknown manufacturer
+    Tokenize and make substitutions for 
     """
-    if frozenset([description[0]]) not in mapping:
-        return False
-
-    if price <= 30.0:
-        return False
-
-    return True
-
+    result = tokenize_code(tree[field])
+    return tuple(make_substitutions(' '.join(result), sublist).split())
