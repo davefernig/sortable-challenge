@@ -91,7 +91,7 @@ def match_on_model(mapping, manufacturer, families, title, max_mod):
     title: tuple(str) - tokenized lisiting title
     max_mod: int - largest N such that some model code is an N-gram
     """ 
-    models, previous_end, previous_length = set(), -1, 0
+    models, previous_end = set(), -1
 
     for family in families:
         
@@ -102,9 +102,8 @@ def match_on_model(mapping, manufacturer, families, title, max_mod):
  
                 if family in mapping[manufacturer] and \
                    title[i:j] in mapping[manufacturer][family] and \
-                   (i > previous_end or j - i >= previous_length):
-                    longest_model_match = title[i:j]
-                    previous_end, previous_length = j, j - i
+                   j > previous_end:
+                    longest_model_match, previous_end = title[i:j], j
 
             if longest_model_match:
                 models.add((family, longest_model_match))
