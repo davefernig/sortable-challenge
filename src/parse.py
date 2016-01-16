@@ -18,7 +18,7 @@ def insert(mapping, manufacturer, family, model, product_name):
 
     PARAMS
     ------------------------------
-    mapping : nested dict - Main data structure
+    mapping : dict - tree of products
     manufacturer: str - manufacturer field
     family: tuple(str) - tokenized family field
     model: tuple(str) - tokenized model field
@@ -40,10 +40,10 @@ def match_on_manufacturer(mapping, manufacturer, title, price):
 
     PARAMS
     ------------------------------
-    mapping : nested dict - Main data structure
+    mapping : dict - tree of products
     manufacturer: str - listing manufacturer field
     title: tuple(str) - tokenized title field
-    price: float
+    price: float - listing price
     """
     if manufacturer not in mapping:
 
@@ -62,9 +62,9 @@ def match_on_family(mapping, manufacturer, title, max_fam):
 
     PARAMS
     ------------------------------
-    mapping : nested dict - main data structure
-    manufacturer: tuple(str) - listing manufacturer field 
-    title: tuple(str) -  tokenized title field
+    mapping : dict - tree of products
+    manufacturer: str - listing manufacturer field 
+    title: tuple(str) - tokenized title field
     max_fam: int - largest N such that some family name is an N-gram
     """ 
     families = set([None])
@@ -85,9 +85,9 @@ def match_on_model(mapping, manufacturer, families, title, max_mod):
 
     PARAMS
     ------------------------------
-    mapping : nested dict - Main data structure
-    manufacturer: str - the manufacturer found for this listing
-    families: list(tuple(str) - families found in the title
+    mapping : dict - tree of products
+    manufacturer: str - listing manufacturer field
+    families: list(tuple(str) - families found in title
     title: tuple(str) - tokenized lisiting title
     max_mod: int - largest N such that some model code is an N-gram
     """ 
