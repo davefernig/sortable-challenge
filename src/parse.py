@@ -120,14 +120,6 @@ if __name__ == "__main__":
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
-    version = sys.version_info[0]
-
-    if version == 2:
-        string_convert = unicode
-
-    if version == 3:
-        string_convert = str
-
     # Dictionary Mapping Products to listings; counters
     mapping, max_fam, max_mod = {}, 0, 0
 
@@ -177,4 +169,4 @@ if __name__ == "__main__":
                     product_name, listings = result[0], result[1:]
                     result_object = {'product_name': product_name, 'listings': listings}
                     line = json.dumps(result_object, ensure_ascii=False).encode('utf8')
-                    outfile.write(string_convert(line, 'utf-8') + '\n')
+                    outfile.write(unicode(line, 'utf-8') + '\n')

@@ -1,14 +1,6 @@
 import json
 import sys
     
-version = sys.version_info[0]
-
-if version == 2:
-    get_response = raw_input
-
-if version == 3:
-    get_response = input
-
 def msg(s0, s1, f0):
 
     if len(s0.difference(s1)) > 0:
@@ -19,7 +11,7 @@ def msg(s0, s1, f0):
 
         print("----------------------Press Enter to continue, 's' to see listings these files share, q to quit----------------------")
         
-        response = get_response()
+        response = raw_input()
 
         if response == 'q':
             sys.exit()
@@ -30,7 +22,7 @@ def msg(s0, s1, f0):
 
             print("----------------------Press Enter to continue, q to quit----------------------")      
             
-            if get_response() == 'q':
+            if raw_input() == 'q':
                 sys.exit()
 
 if __name__ == "__main__":

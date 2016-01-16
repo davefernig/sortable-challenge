@@ -1,8 +1,8 @@
 # Sortable Coding Challenge
-My entry to the Sortable Coding Challenge. It is a hashing solution with rule-based pre-processing. It runs in linear time, given some basic assumptions (more details below). On my machine (1.7GHz) it takes 3.3s with Python 2 (and 3s with Python 3).
+My entry to the Sortable Coding Challenge. It is a hashing solution with rule-based pre-processing. It runs in linear time, given some basic assumptions (more details below). On my machine (1.7GHz) it takes 3.3s.
 
 ## Requires
-Python 2 or Python 3. (I've tested with 2.7 and 3.4. If you encounter version compatibility issues, let me know and I'll find a fix!)
+Python 2
 
 ## Usage
 

@@ -9,13 +9,6 @@ if __name__ == "__main__":
 
     filename = sys.argv[1]
     output_path = '../output/'
-    version = sys.version_info[0]
-
-    if version == 2:
-        get_response = raw_input
-
-    if version == 3:
-        get_response = input
 
     with open(output_path + filename) as infile:
 
@@ -27,7 +20,7 @@ if __name__ == "__main__":
                 print('    ' + str(listing))
         
             print('---------------------------------------Press Enter to continue, q to quit---------------------------------------')
-            response = get_response()
+            response = raw_input()
 
             if response == 'q':
                 sys.exit()
