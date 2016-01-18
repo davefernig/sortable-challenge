@@ -92,7 +92,6 @@ def match_on_model(mapping, manufacturer, families, title):
     manufacturer: str - listing manufacturer field
     families: list(tuple(str) - families found in title
     title: tuple(str) - tokenized lisiting title
-    max_mod: int - largest N such that some model code is an N-gram
     """ 
 
     if None not in mapping[manufacturer]:
