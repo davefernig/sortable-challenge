@@ -1,4 +1,21 @@
 # Sortable Coding Challenge
+
+UPDATE: After submitting my solution on Friday, I was curious to see what other people had done, and looked at some other repos. I thought I would list some observations and final thoughts: 
+
+1. One obvious improvement to my implementation was using a trie (prefix-tree) to store model codes for faster matching. I was curious to see how much-speed up this would give, so I spent Sunday afternoon rolling up a trie implementation. It resulted in a significant reduction in runtime (about 30%). I've added the script (though it is admittedly a little coarse) to /src_update/trie_parse.py.
+
+2. In my original implementation I was careful to provide a solution that is bounded by O(m + n), where m is the number of products in products.txt and n is the number of listings. This is because I knew I was only dealing with a subset of the data, and it would be safest to make sure everything scales linearly. However, in practice, m will grow far more slowly than n (assuming m even grows at all). If we know a bound on m, it might turn out to be worthwhile developing a solution that depends multiplicatively on m for gains in accuracy. It also might be worth hard-coding more rules based on the specific product set. For example, by concatenating bigram family names and assuming all family names are unigram, I was able to get the runtime below 2s. Of course, this sort of thing won't generalize to new product sets.
+
+3. While writing the trie implementation, I noticed that there are examples of model codes in the dataset that are prefixes of others. This might mean that my second assumption (i.e. that we want to recall all variants of a model, full discussion below) results in an intolerably high false positive rate. Whether or not this happens essentially depends on how exhaustive our list of products is. By way of example: consider the Canon T3 and Canon T3i. Because both are in products.txt, if we see a listing for a T3i, this algorithm will match on T3i (and not T3). However, if T3i was not in products.txt it would (incorrectly) match on T3.
+
+4. It appears that the Samsung SL 202 appears twice in products.txt (lines 186 and 258). By convention, my scripts match listings for this product to the product name on line 186.
+
+5. I found and fixed a minor bug (loop boundary) in parse.py. The fix can be about at /src_update/fixed_parse.py It affected 27 listings. I didn't notice it originally because it prevented the matching of listings where model codes are at the very end – often accessories – so ironically the bug was improving perfomance. In general, it seems like leveraging word-positional information would be a smart way to reduce false positives. I felt [this entry](https://github.com/aaronlevin/sortable) made cool use of this idea.
+
+Below is my original readme.
+
+Dave Fernig, Jan 16, 2016
+
 My entry to the Sortable Coding Challenge. It is a hashing solution with rule-based pre-processing. It runs in linear time, given some basic assumptions (more details below). On my machine (1.7GHz) it takes 3.3s.
 
 ## Requires
