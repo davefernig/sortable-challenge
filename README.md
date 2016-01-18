@@ -10,7 +10,7 @@ UPDATE: After submitting my solution on Friday, I was curious to see what other 
 
 4. It appears that the Samsung SL 202 appears twice in products.txt (lines 186 and 258). By convention, my scripts match listings for this product to the product name on line 186.
 
-5. I found and fixed a minor bug (loop boundary) in parse.py. The fix can be about at /src_update/fixed_parse.py It affected 27 listings. I didn't notice it originally because it prevented the matching of listings where model codes are at the very end – often accessories – so ironically the bug was improving perfomance. In general, it seems like leveraging word-positional information would be a smart way to reduce false positives. I felt [this entry](https://github.com/aaronlevin/sortable) made cool use of this idea.
+5. I found and fixed a minor bug (loop boundary) in parse.py. The fix can be found at /src_update/fixed_parse.py It affected 27 listings. I didn't notice it originally because it prevented the matching of listings where model codes are at the very end (which are often accessories) so ironically the bug was improving perfomance. In general, it seems like leveraging word-positional information would be a smart future direction for the reduction of false positives. I felt [this entry](https://github.com/aaronlevin/sortable) made cool use of this idea.
 
 Below is my original readme.
 
